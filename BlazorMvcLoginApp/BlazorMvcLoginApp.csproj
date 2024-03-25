@@ -6,4 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Captcha" Version="4.4.2" />
+  </ItemGroup>
+
 </Project>

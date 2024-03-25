@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using BlazorMvcLoginApp.Models;
+using BotDetect.Web.Mvc;
 
 namespace BlazorMvcLoginApp.Controllers
 {
@@ -14,8 +15,18 @@ namespace BlazorMvcLoginApp.Controllers
         }
 
         [HttpPost]
+        [CaptchaValidationActionFilter("CaptchaCode", "SystemCaptcha", "Wrong Captcha!")]
         public async Task<IActionResult> Login(UserModel user)
         {
+            string userInput = HttpContext.Request.Form["CaptchaCode"]!;
+            MvcCaptcha mvcCaptcha = new MvcCaptcha("SystemCaptcha");
+
+            if (!mvcCaptcha.Validate(userInput))
+            {
+                MvcCaptcha.ResetCaptcha("ExampleCaptcha");
+                return View();
+            }
+
             var claims = new List<Claim>
             {
                 new(ClaimTypes.Name, user.UserName),
