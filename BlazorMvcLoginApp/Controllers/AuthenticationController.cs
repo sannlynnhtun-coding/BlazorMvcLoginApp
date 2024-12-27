@@ -15,6 +15,7 @@ namespace BlazorMvcLoginApp.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [CaptchaValidationActionFilter("CaptchaCode", "SystemCaptcha", "Wrong Captcha!")]
         public async Task<IActionResult> Login(UserModel user)
         {
