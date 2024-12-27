@@ -1,3 +1,4 @@
+using BlazorMvcLoginApp.Controllers;
 using BlazorMvcLoginApp.Data;
 using BlazorMvcLoginApp.Middlewares;
 using BotDetect.Web;
@@ -47,6 +48,7 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddSingleton<WeatherForecastService>();
 builder.Services.AddTransient<CookieMiddleware>();
+builder.Services.AddSingleton<ICaptchaValidator>(new CaptchaValidator("SystemCaptcha"));
 
 var app = builder.Build();
 

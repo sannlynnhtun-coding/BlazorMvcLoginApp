@@ -5,48 +5,72 @@ using System.Security.Claims;
 using BlazorMvcLoginApp.Models;
 using BotDetect.Web.Mvc;
 
-namespace BlazorMvcLoginApp.Controllers
+namespace BlazorMvcLoginApp.Controllers;
+
+public interface ICaptchaValidator
 {
-    public class AuthenticationController : Controller
+    bool Validate(string userInput);
+}
+
+public class CaptchaValidator : ICaptchaValidator
+{
+    private readonly string _captchaId;
+
+    public CaptchaValidator(string captchaId)
     {
-        public ActionResult Login()
+        _captchaId = captchaId;
+    }
+
+    public bool Validate(string userInput)
+    {
+        MvcCaptcha mvcCaptcha = new MvcCaptcha(_captchaId);
+        return mvcCaptcha.Validate(userInput);
+    }
+}
+
+public class AuthenticationController : Controller
+{
+    private readonly ICaptchaValidator _captchaValidator;
+
+    public AuthenticationController(ICaptchaValidator captchaValidator)
+    {
+        _captchaValidator = captchaValidator;
+    }
+
+    public ActionResult Login()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Login(UserModel user, [FromForm] string captchaCode)
+    {
+        if (!_captchaValidator.Validate(captchaCode))
         {
+            MvcCaptcha.ResetCaptcha("SystemCaptcha");
             return View();
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [CaptchaValidationActionFilter("CaptchaCode", "SystemCaptcha", "Wrong Captcha!")]
-        public async Task<IActionResult> Login(UserModel user)
+        var claims = new List<Claim>
         {
-            string userInput = HttpContext.Request.Form["CaptchaCode"]!;
-            MvcCaptcha mvcCaptcha = new MvcCaptcha("SystemCaptcha");
+            new Claim(ClaimTypes.Name, user.UserName),
+            new Claim(ClaimTypes.Role, "User"),
+            new Claim(ClaimTypes.Role, "Admin"),
+        };
 
-            if (!mvcCaptcha.Validate(userInput))
-            {
-                MvcCaptcha.ResetCaptcha("ExampleCaptcha");
-                return View();
-            }
+        var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+        var principal = new ClaimsPrincipal(identity);
+        await HttpContext.SignInAsync(principal);
 
-            var claims = new List<Claim>
-            {
-                new(ClaimTypes.Name, user.UserName),
-                new(ClaimTypes.Role, "User"),
-                new(ClaimTypes.Role, "Admin"),
-            };
+        return Redirect("/Home");
+    }
 
-            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-            var principal = new ClaimsPrincipal(identity);
-            await HttpContext.SignInAsync(principal);
-
-            return Redirect("/Home");
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync();
-            return Redirect("/");
-        }
+    [HttpPost]
+    public async Task<IActionResult> Logout()
+    {
+        await HttpContext.SignOutAsync();
+        return Redirect("/");
     }
 }
+

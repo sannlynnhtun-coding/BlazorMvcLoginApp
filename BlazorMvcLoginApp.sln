@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlazorMvcLoginApp.Tests", "BlazorMvcLoginApp.Tests\BlazorMvcLoginApp.Tests.csproj", "{40DD549F-EBA1-4F95-B54E-CCBD7BB1A62D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{3D8695B5-DAF1-4191-AD7E-C44D6EF71065}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D8695B5-DAF1-4191-AD7E-C44D6EF71065}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D8695B5-DAF1-4191-AD7E-C44D6EF71065}.Release|Any CPU.Build.0 = Release|Any CPU
+		{40DD549F-EBA1-4F95-B54E-CCBD7BB1A62D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{40DD549F-EBA1-4F95-B54E-CCBD7BB1A62D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{40DD549F-EBA1-4F95-B54E-CCBD7BB1A62D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{40DD549F-EBA1-4F95-B54E-CCBD7BB1A62D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
