@@ -11,6 +11,9 @@ using System.Collections.Generic;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.Extensions.Logging;
+using BlazorMvcLoginApp.Services;
+
+namespace BlazorMvcLoginApp.Tests;
 
 public class AuthenticationControllerTests
 {
@@ -56,9 +59,9 @@ public class AuthenticationControllerTests
 
         // Mock Captcha validation
         _controller.ControllerContext.HttpContext.Request.Form = new FormCollection(new Dictionary<string, Microsoft.Extensions.Primitives.StringValues>
-        {
-            { "CaptchaCode", "valid-captcha-code" }
-        });
+    {
+        { "CaptchaCode", "valid-captcha-code" }
+    });
 
         // Act
         var result = await _controller.Login(user, "valid-captcha-code");
@@ -77,9 +80,9 @@ public class AuthenticationControllerTests
 
         // Mock Captcha validation
         _controller.ControllerContext.HttpContext.Request.Form = new FormCollection(new Dictionary<string, Microsoft.Extensions.Primitives.StringValues>
-        {
-            { "CaptchaCode", "invalid-captcha-code" }
-        });
+    {
+        { "CaptchaCode", "invalid-captcha-code" }
+    });
 
         // Act
         var result = await _controller.Login(user, "invalid-captcha-code");

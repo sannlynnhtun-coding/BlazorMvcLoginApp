@@ -1,6 +1,6 @@
-using BlazorMvcLoginApp.Controllers;
 using BlazorMvcLoginApp.Data;
 using BlazorMvcLoginApp.Middlewares;
+using BlazorMvcLoginApp.Services;
 using BotDetect.Web;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components;

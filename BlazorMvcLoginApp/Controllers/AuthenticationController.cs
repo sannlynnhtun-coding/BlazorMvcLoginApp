@@ -4,29 +4,9 @@ using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using BlazorMvcLoginApp.Models;
 using BotDetect.Web.Mvc;
+using BlazorMvcLoginApp.Services;
 
 namespace BlazorMvcLoginApp.Controllers;
-
-public interface ICaptchaValidator
-{
-    bool Validate(string userInput);
-}
-
-public class CaptchaValidator : ICaptchaValidator
-{
-    private readonly string _captchaId;
-
-    public CaptchaValidator(string captchaId)
-    {
-        _captchaId = captchaId;
-    }
-
-    public bool Validate(string userInput)
-    {
-        MvcCaptcha mvcCaptcha = new MvcCaptcha(_captchaId);
-        return mvcCaptcha.Validate(userInput);
-    }
-}
 
 public class AuthenticationController : Controller
 {
